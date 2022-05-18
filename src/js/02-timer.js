@@ -22,11 +22,11 @@ function startСountdownTimer() {
   timerId = setInterval(() => {
     if (selectedDate <= new Date()) {
       clearInterval(timerId);
-      refs.startBtn.disabled = true;
       return;
     }
     renderСountdownTimer(selectedDate, new Date());
   }, 1000);
+  refs.startBtn.disabled = true;
 };
 
 function renderСountdownTimer(selectedDate, currentDate) {
@@ -38,7 +38,7 @@ function renderСountdownTimer(selectedDate, currentDate) {
   refs.minutes.textContent = minutes;
   refs.seconds.textContent = seconds;
 
-  return refs;
+  return refs;  
 }
 
 const options = {
@@ -47,14 +47,13 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    currentDate = new Date();
     selectedDate = selectedDates[0];
-
-    if (selectedDate < currentDate) {
+    currentDate = new Date();
+    
+    if (selectedDate <= currentDate) {
       Notify.failure('Please choose a date in the future');
       return;
     }
-
     refs.startBtn.disabled = false;
     clearInterval(timerId);
   },
