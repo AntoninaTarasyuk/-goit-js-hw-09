@@ -24,7 +24,7 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    resetСountdownTimer();
+    renderСountdownTimer(0);
     clearInterval(timerId);
 
     selectedDate = selectedDates[0];
@@ -55,20 +55,13 @@ function startСountdownTimer() {
   refs.startBtn.disabled = true;
 };
 
-function renderСountdownTimer(remainingTime) {
-  const { days, hours, minutes, seconds } = convertMs(remainingTime);
+function renderСountdownTimer(time) {
+  const { days, hours, minutes, seconds } = convertMs(time);
 
   refs.days.textContent = days;
   refs.hours.textContent = hours;
   refs.minutes.textContent = minutes;
   refs.seconds.textContent = seconds;
-};
-
-function resetСountdownTimer() {
-  refs.days.textContent = '00';
-  refs.hours.textContent = '00';
-  refs.minutes.textContent = '00';
-  refs.seconds.textContent = '00';
 };
 
 function convertMs(ms) {
