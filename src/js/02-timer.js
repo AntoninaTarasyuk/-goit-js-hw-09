@@ -18,35 +18,15 @@ let selectedDate = null;
 let currentDate = null;
 let timerId = null;
 
-function startСountdownTimer() {
-  timerId = setInterval(() => {
-    if (selectedDate <= new Date()) {
-      clearInterval(timerId);
-      return;
-    }
-    renderСountdownTimer(selectedDate, new Date());
-  }, 1000);
-  refs.startBtn.disabled = true;
-};
-
-function renderСountdownTimer(selectedDate, currentDate) {
-  const remainingTime = selectedDate - currentDate;
-  const { days, hours, minutes, seconds } = convertMs(remainingTime);
-
-  refs.days.textContent = days;
-  refs.hours.textContent = hours;
-  refs.minutes.textContent = minutes;
-  refs.seconds.textContent = seconds;
-
-  return refs;  
-}
-
 const options = {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
+    resetСountdownTimer();
+    clearInterval(timerId);
+
     selectedDate = selectedDates[0];
     currentDate = new Date();
     
@@ -54,12 +34,42 @@ const options = {
       Notify.failure('Please choose a date in the future');
       return;
     }
+
     refs.startBtn.disabled = false;
-    clearInterval(timerId);
   },
 };
 
 flatpickr(refs.dateInput, options);
+
+function startСountdownTimer() {
+  timerId = setInterval(() => {
+    currentDate = new Date();
+    if (selectedDate <= currentDate) {
+      clearInterval(timerId);
+      return;
+    }
+    const remainingTime = selectedDate - currentDate;
+    renderСountdownTimer(remainingTime);
+  }, 1000);
+
+  refs.startBtn.disabled = true;
+};
+
+function renderСountdownTimer(remainingTime) {
+  const { days, hours, minutes, seconds } = convertMs(remainingTime);
+
+  refs.days.textContent = days;
+  refs.hours.textContent = hours;
+  refs.minutes.textContent = minutes;
+  refs.seconds.textContent = seconds;
+};
+
+function resetСountdownTimer() {
+  refs.days.textContent = '00';
+  refs.hours.textContent = '00';
+  refs.minutes.textContent = '00';
+  refs.seconds.textContent = '00';
+};
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
