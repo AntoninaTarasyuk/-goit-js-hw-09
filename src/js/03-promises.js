@@ -18,6 +18,8 @@ function createPromise(position, delay) {
 
 function generatePromises(e) {
   e.preventDefault();
+  
+  const form = e.currentTarget;
 
   let delay = Number(form.elements.delay.value);
   const step = Number(form.elements.step.value);
