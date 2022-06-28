@@ -35,7 +35,8 @@ const options = {
       return;
     }
 
-    refs.startBtn.disabled = false;
+    // refs.startBtn.disabled = false;
+    refs.startBtn.removeAttribute("disabled");
   },
 };
 
